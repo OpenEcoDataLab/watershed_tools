@@ -19,9 +19,9 @@
 library(stringr)
 library(dplyr)
 library(plyr)
-# devtools::install_github("USGS-R/nhdplusTools")
+# remotes::install_github("USGS-R/nhdplusTools")
 library(nhdplusTools)
-# devtools::install_github("jsta/nhdR")
+# remotes::install_github("jsta/nhdR")
 library(nhdR)
 library(RCurl)
 library(sf)
@@ -29,7 +29,9 @@ library(sf)
 
 # 1. setup and helper functions ####
 
-setwd('~/Desktop/untracked/watershed_geohax/')
+#set your working directory to the location of your site data file.
+#   site data must include latitude and longitude columns (decimal degrees)
+# setwd('~/Desktop/untracked/watershed_geohax/')
 sites = read.csv('site_data.csv', stringsAsFactors=FALSE)
 WGS84 = 4326 #EPSG code for coordinate reference system
 
@@ -218,7 +220,7 @@ streamcat_bulk = function(site_df, streamcat_sets){
 # 2. get NHDPlusV2 data ####
 
 #COMID is the NHD identifier for any reach in the continental U.S.
-#add COMIDs to your site table.
+#add COMIDs to your site table. If this doesn't work, update nhdplusTools
 sites$COMID = unlist(mapply(comid_from_point, sites$latitude,
     sites$longitude, WGS84))
 sites = sites[! is.na(sites$COMID),]
